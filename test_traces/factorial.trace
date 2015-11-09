@@ -1,0 +1,11 @@
+T Call: (7) factorial(5, _G4960)
+T Call: (8) factorial(4, _G5071)
+T Call: (9) factorial(3, _G5074)
+T Call: (10) factorial(2, _G5077)
+T Call: (11) factorial(1, _G5080)
+T Exit: (11) factorial(1, 1)
+T Exit: (10) factorial(2, 1)
+T Exit: (9) factorial(3, 1)
+T Exit: (8) factorial(4, 1)
+T Exit: (7) factorial(5, 1)
+Factorial = 1 .
