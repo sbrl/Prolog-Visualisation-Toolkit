@@ -1,0 +1,103 @@
+Call: (7) dfs ? creep
+Call: (8) root(a) ? creep
+Exit: (8) root(a) ? creep
+Call: (8) dfs(a) ? creep
+Call: (9) fact(a) ? creep
+Fail: (9) fact(a) ? creep
+Redo: (8) dfs(a) ? creep
+Call: (9) tree(a, _G7631) ? creep
+Exit: (9) tree(a, b) ? creep
+Call: (9) dfs(b) ? creep
+Call: (10) fact(b) ? creep
+Fail: (10) fact(b) ? creep
+Redo: (9) dfs(b) ? creep
+Call: (10) tree(b, _G7631) ? creep
+Exit: (10) tree(b, d) ? creep
+Call: (10) dfs(d) ? creep
+Call: (11) fact(d) ? creep
+Fail: (11) fact(d) ? creep
+Redo: (10) dfs(d) ? creep
+Call: (11) tree(d, _G7631) ? creep
+Exit: (11) tree(d, i) ? creep
+Call: (11) dfs(i) ? creep
+Call: (12) fact(i) ? creep
+Fail: (12) fact(i) ? creep
+Redo: (11) dfs(i) ? creep
+Call: (12) tree(i, _G7631) ? creep
+Fail: (12) tree(i, _G7631) ? creep
+Fail: (11) dfs(i) ? creep
+Redo: (11) tree(d, _G7631) ? creep
+Exit: (11) tree(d, j) ? creep
+Call: (11) dfs(j) ? creep
+Call: (12) fact(j) ? creep
+Fail: (12) fact(j) ? creep
+Redo: (11) dfs(j) ? creep
+Call: (12) tree(j, _G7631) ? creep
+Fail: (12) tree(j, _G7631) ? creep
+Fail: (11) dfs(j) ? creep
+Fail: (10) dfs(d) ? creep
+Redo: (10) tree(b, _G7631) ? creep
+Exit: (10) tree(b, e) ? creep
+Call: (10) dfs(e) ? creep
+Call: (11) fact(e) ? creep
+Fail: (11) fact(e) ? creep
+Redo: (10) dfs(e) ? creep
+Call: (11) tree(e, _G7631) ? creep
+Fail: (11) tree(e, _G7631) ? creep
+Fail: (10) dfs(e) ? creep
+Redo: (10) tree(b, _G7631) ? creep
+Exit: (10) tree(b, f) ? creep
+Call: (10) dfs(f) ? creep
+Call: (11) fact(f) ? creep
+Fail: (11) fact(f) ? creep
+Redo: (10) dfs(f) ? creep
+Call: (11) tree(f, _G7631) ? creep
+Exit: (11) tree(f, k) ? creep
+Call: (11) dfs(k) ? creep
+Call: (12) fact(k) ? creep
+Fail: (12) fact(k) ? creep
+Redo: (11) dfs(k) ? creep
+Call: (12) tree(k, _G7631) ? creep
+Fail: (12) tree(k, _G7631) ? creep
+Fail: (11) dfs(k) ? creep
+Fail: (10) dfs(f) ? creep
+Fail: (9) dfs(b) ? creep
+Redo: (9) tree(a, _G7631) ? creep
+Exit: (9) tree(a, c) ? creep
+Call: (9) dfs(c) ? creep
+Call: (10) fact(c) ? creep
+Fail: (10) fact(c) ? creep
+Redo: (9) dfs(c) ? creep
+Call: (10) tree(c, _G7631) ? creep
+Exit: (10) tree(c, g) ? creep
+Call: (10) dfs(g) ? creep
+Call: (11) fact(g) ? creep
+Fail: (11) fact(g) ? creep
+Redo: (10) dfs(g) ? creep
+Call: (11) tree(g, _G7631) ? creep
+Exit: (11) tree(g, l) ? creep
+Call: (11) dfs(l) ? creep
+Call: (12) fact(l) ? creep
+Fail: (12) fact(l) ? creep
+Redo: (11) dfs(l) ? creep
+Call: (12) tree(l, _G7631) ? creep
+Fail: (12) tree(l, _G7631) ? creep
+Fail: (11) dfs(l) ? creep
+Fail: (10) dfs(g) ? creep
+Redo: (10) tree(c, _G7631) ? creep
+Exit: (10) tree(c, h) ? creep
+Call: (10) dfs(h) ? creep
+Call: (11) fact(h) ? creep
+Fail: (11) fact(h) ? creep
+Redo: (10) dfs(h) ? creep
+Call: (11) tree(h, _G7631) ? creep
+Exit: (11) tree(h, m) ? creep
+Call: (11) dfs(m) ? creep
+Call: (12) fact(m) ? creep
+Exit: (12) fact(m) ? creep
+Exit: (11) dfs(m) ? creep
+Exit: (10) dfs(h) ? creep
+Exit: (9) dfs(c) ? creep
+Exit: (8) dfs(a) ? creep
+Exit: (7) dfs ? creep
+true .
