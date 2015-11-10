@@ -7,6 +7,7 @@
 ███████   ████   ███████ ██   ████    ██        ██████  ██ ██   ████ ██████  ██ ██   ████  ██████  ███████ 
 */
 window.addEventListener("load", function (event) {
+    // Listen for input in the textbox
     document.getElementById("prolog-trace").addEventListener("input", function (event) {
         var trace = parseTrace(this.value);
         console.log(trace);
@@ -59,4 +60,18 @@ function parseTrace(source)
         trace,
         result
     };
+}
+
+function generateGraphCode(trace) {
+    var result = "graph TD\n";
+    var i = 0;
+    for (let part of trace.trace)
+    {
+        if(part.type == call)
+        {
+            result += `\tid${i}[${part.call.replace(/\[/g, "")}]\n`;
+        }
+        
+        i++;
+    }
 }
