@@ -3,3 +3,9 @@ body
 {
 	font-family: sans-serif;
 }
+
+textarea
+{
+	width: 20rem;
+	height: 30rem;
+}
