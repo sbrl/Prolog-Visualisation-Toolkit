@@ -1,8 +1,16 @@
+"use strict";
 window.addEventListener("load", function (event) {
     
 });
 
-function parse_prolog_trace(source)
+class TraceParser
 {
+    constructor()
+    {
+        
+    }
     
+    splitLines(source) {
+        return source.split(/\r\n?/g);
+    }
 }
