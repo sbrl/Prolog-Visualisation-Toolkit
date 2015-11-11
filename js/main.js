@@ -93,18 +93,31 @@ function generateGraphCode(trace) {
 	{
 		// Set this trace line's ID
 		part.id = i;
-		
 		// Calculate the id of the last node in the sequence
 		let lastID = "start";
 		if(stack.length > 0) lastID = "id" + stack[stack.length - 1].id;
+		
+		
+		
 		
 		switch(part.type)
 		{
 			
 			case "call":
+				// Calculate the number of times we have remade our dicision from this node
+				let label = "";
+				if(stack.length > 0)
+				{
+					let lastNode = stack[stack.length - 1];
+					if(typeof lastNode.redone != "number")
+						lastNode.redone = 0;
+					else
+						lastNode.redone++;
+					label = `|${lastNode.redone}|`;
+				}
 				// Add this node to the diagram
 				result += `\tid${i}["${part.call.replace(/\[/g, "")}"]\n`;
-				result += `\t${lastID} --> id${i}\n`;
+				result += `\t${lastID}-->${label}id${i}\n`;
 				
 				// Push the node onto the stack
 				stack.push(part);
