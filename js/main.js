@@ -18,6 +18,9 @@ window.addEventListener("load", function (event) {
 		
 		document.getElementById("diagram-code").value = graphCode;
 		
+		// Wipe the diagram output box
+		document.getElementById("diagram-output").innerHTML = "";
+		
 		// Check the graph code syntax first
 		if(!mermaid.parse(graphCode)) console.error("Invalid diagram syntax.");
 		// Draw the diagram to the screen
@@ -96,9 +99,6 @@ function generateGraphCode(trace) {
 		// Calculate the id of the last node in the sequence
 		let lastID = "start";
 		if(stack.length > 0) lastID = "id" + stack[stack.length - 1].id;
-		
-		
-		
 		
 		switch(part.type)
 		{
