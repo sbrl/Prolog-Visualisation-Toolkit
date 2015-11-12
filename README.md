@@ -18,6 +18,10 @@ If you want to help out, there are several things you can do:
 Credits
 -------
  - (none yet! [Open an issue](https://github.com/sbrl/Prolog-Visualisation-Toolkit/issues/new) or [Fork this repository](https://github.com/sbrl/Prolog-Visualisation-Toolkit/fork) and be the first!)
+ 
+License
+-------
+This code is released under the [MPL 2.0](https://raw.githubusercontent.com/sbrl/Prolog-Visualisation-Toolkit/master/LICENSE). If you don't know what that means, [tl;dr Legal have an excellent explanation](https://tldrlegal.com/license/mozilla-public-license-2.0-(mpl-2)). If this license isn't suitable, please [open an issue](https://github.com/sbrl/Prolog-Visualisation-Toolkit/issues/new) and I will try and sort it out.
 
 Notes
 -----
