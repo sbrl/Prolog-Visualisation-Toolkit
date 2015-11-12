@@ -4,12 +4,20 @@ Welcome to the Prolog Visualisation Toolkit. This project exists out of frustrat
 
 For now, this repository contains a web based tool that given a Prolog trace (examples are in the `test_traces` folder), produces a diagram that represents that trace. The next step will be to animate the diagram.
 
+Getting Started
+---------------
+Currently the latest working version of this code is hosted on [GitHub Pages](//pages.github.com/). You can find it [here](http://sbrl.github.io/Prolog-Visualisation-Toolkit/index.html).
+
 Contributing
 ------------
 If you want to help out, there are several things you can do:
 
- - Open an issue if you find a trace that breaks the diagram
- - Fork this repository and play around with the code
+ - Open an issue if you find a trace that breaks the diagram.
+ - Fork this repository and play around with the code. Remember to commit to the `master` branch and not the `gh-pages` branch!
+
+Credits
+-------
+ - (none yet! [Open an issue](https://github.com/sbrl/Prolog-Visualisation-Toolkit/issues/new) or [Fork this repository](https://github.com/sbrl/Prolog-Visualisation-Toolkit/fork) and be the first!)
 
 Notes
 -----
