@@ -88,6 +88,13 @@ function parseTrace(source)
 	};
 }
 
+/*
+██████  ██  █████   ██████  ██████   █████  ███    ███ ███    ███ ██ ███    ██  ██████  
+██   ██ ██ ██   ██ ██       ██   ██ ██   ██ ████  ████ ████  ████ ██ ████   ██ ██       
+██   ██ ██ ███████ ██   ███ ██████  ███████ ██ ████ ██ ██ ████ ██ ██ ██ ██  ██ ██   ███ 
+██   ██ ██ ██   ██ ██    ██ ██   ██ ██   ██ ██  ██  ██ ██  ██  ██ ██ ██  ██ ██ ██    ██ 
+██████  ██ ██   ██  ██████  ██   ██ ██   ██ ██      ██ ██      ██ ██ ██   ████  ██████  
+*/
 function generateGraphCode(trace) {
 	var result = "graph LR\n\tstart\n",
 		stack = [],
@@ -133,6 +140,7 @@ function generateGraphCode(trace) {
 				// This will be used later in the animation, but also to update
 				// the visual description of each call as we get to know
 				// additional information upon exiting a call.
+				stack.pop();
 				break;
 		}
 		
