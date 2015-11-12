@@ -8,6 +8,8 @@ Getting Started
 ---------------
 Currently the latest working version of this code is hosted on [GitHub Pages](//pages.github.com/). You can find it [here](http://sbrl.github.io/Prolog-Visualisation-Toolkit/index.html).
 
+If you want to run the bleeding edge version, simply clone this repository and open `index.html` in your browser. Help cloning is available if you [open an issue](https://github.com/sbrl/Prolog-Visualisation-Toolkit/issues/new).
+
 Contributing
 ------------
 If you want to help out, there are several things you can do:
