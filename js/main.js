@@ -153,3 +153,17 @@ function generateGraphCode(trace) {
 	
 	return result;
 }
+
+/*
+ * @summary Finds the "call" associated with the given trace entry.
+ * 
+ * @param trace {array} - The trace to search.
+ * @param entry {object} - The entry to find the associated call for.
+ * @param entryIndex {number} - The index of the above entry in the trace. This is needed because we search backwards from this point in order to find the associated call to avoid finding the incorrect answer
+ * 
+ * @returns {number} - The index of the trace that contains the call of the associated function.
+ */
+function findCall(trace, entry, entryIndex)
+{
+	// todo implement this
+}
