@@ -37,6 +37,10 @@ window.addEventListener("load", function (event) {
 			// An even bigger hack to forcefully update the display after performing the above hack
 			outputElement.innerHTML += "";
 		});
+		
+		var traceTreeData = generateTraceTree(trace.trace);
+		console.log("trace tree:", traceTreeData.rootNode);
+		console.log("walkthrough:", traceTreeData.walkthrough);
 	});
 });
 
@@ -88,6 +92,80 @@ function parseTrace(source)
 	};
 }
 
+function generateTraceTree(trace)
+{
+	var i = 0,
+		prevNode, // The previous node we were working on - usually the parent node
+		currentNode, // The current ndoe we are working on
+		walkthough = []; // An array that essentially contains a guide on how to walk the tree.
+	
+	for(var i = 0; i < trace.length; i++)
+	{
+		// This starts to break when i is about 37. I think its because of edge case that causes us to back up through the tree too fast.
+		// I theorise that it has to be because if some kind of redo edge case.
+		// We might need to checl that the thing we are failing on is the same as the current node or something.
+		// We can't do a similar check on exit however because the call signature changes O.o
+		switch(trace[i].type)
+		{
+			case "call":
+				// Set the preiously current node to be the previous node
+				prevNode = currentNode;
+				// Set this node to be the current node
+				currentNode = trace[i];
+				// Give this node a unique id
+				currentNode.id = i;
+				// Set the current node's parent
+				currentNode.parentNode = prevNode;
+				// Create an array to hold all the child calls
+				currentNode.childCalls = [];
+				// Add this node to the parent node's list of calls
+				if(typeof prevNode !== "undefined") // But only if the previous node is defined (it isn't in the beginning)
+					prevNode.childCalls.push(currentNode);
+				
+				// Push this call to the walkthough
+				walkthough.push({ type: trace[i].type, id: currentNode.id });
+				break;
+			case "fail":
+				// Push this fail onto the walkthough before we back up one level
+				walkthough.push({ type: trace[i].type, id: currentNode.id });
+				
+				
+				// We have failed! Back up the tree one level.
+				prevNode = prevNode.parentNode;
+				currentNode = currentNode.parentNode;
+				
+				
+				break;
+			case "exit":
+				// Push this exit onto the walkthough before we back up one level
+				walkthough.push({ type: trace[i].type, id: currentNode.id });
+				
+				// Save the new call signature - new / different information is often available upon exit.
+				if(!Array.isArray(currentNode.callSignatureUpdates))
+					currentNode.callSignatureUpdates = [];
+				currentNode.callSignatureUpdates.push(trace[i].call);
+				
+				// Back up the tree one level
+				prevNode = prevNode.parentNode;
+				currentNode = currentNode.parentNode;
+				
+				
+				break;
+			case "redo":
+				// Push this redo onto the walkthrough
+				walkthough.push({ type: trace[i].type, id: currentNode.id, redoCallSignature: trace[i].call });
+				break;
+		}
+	}
+	
+	return {
+		// We will have exited all the calls by this point, therefore currentNode will be undefined as it was in the beginning.
+		rootNode: prevNode,
+		
+		walkthrough: walkthough
+	}
+}
+
 /*
 ██████  ██  █████   ██████  ██████   █████  ███    ███ ███    ███ ██ ███    ██  ██████  
 ██   ██ ██ ██   ██ ██       ██   ██ ██   ██ ████  ████ ████  ████ ██ ████   ██ ██       
@@ -110,9 +188,9 @@ function generateGraphCode(trace) {
 		let lastID = "start";
 		if(stack.length > 0) lastID = "id" + stack[stack.length - 1].id;
 		
-		// console.log("stack:");
-		// console.table(stack);
-		console.log(`cline: ${part.type} ${part.call} (depth ${part.recursionDepth})`);
+		//console.log("stack:");
+		//console.table(stack);
+		//console.log(`cline: ${part.type} ${part.call} (depth ${part.recursionDepth})`);
 		
 		switch(part.type)
 		{
