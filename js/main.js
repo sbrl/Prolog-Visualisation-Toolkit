@@ -14,7 +14,9 @@ window.addEventListener("load", function (event) {
 	document.getElementById("prolog-trace").addEventListener("input", function (event) {
 		// Parse the trace and generate the graph code
 		var trace = parseTrace(this.value),
-			graphCode = generateGraphCode(trace);
+//			graphCode = generateGraphCode(trace);
+			graphTree = generateTraceTree(trace.trace),
+			graphCode = generateGraphCodeFromTree(graphTree.rootNode, graphTree.walkthrough);
 		
 		document.getElementById("diagram-code").value = graphCode;
 		
@@ -138,6 +140,7 @@ function generateTraceTree(trace)
 				break;
 			case "exit":
 				// Push this exit onto the walkthough before we back up one level
+				// todo Include the exitSignature in the object that we push here
 				walkthough.push({ type: trace[i].type, id: currentNode.id });
 				
 				// Save the new call signature - new / different information is often available upon exit.
@@ -146,12 +149,31 @@ function generateTraceTree(trace)
 				currentNode.callSignatureUpdates.push(trace[i].call);
 				
 				// Back up the tree one level
-				prevNode = prevNode.parentNode;
-				currentNode = currentNode.parentNode;
+				prevNode = (typeof prevNode != "undefined") ? prevNode.parentNode : undefined;
+				if(i < trace.length - 1) // Don't back up ont he last node. This causes us to loose our reference to the last node!
+					currentNode = currentNode.parentNode;
 				
 				
 				break;
 			case "redo":
+				// Check if the recursion depth of the redo is the same or different to the recursion depth of the currentNode.
+				// note This might be useful as a secondary indicator as to whether we are dealing with a redo of a child call or a redo of the currentNode
+				
+				if(trace[i].recursionDepth == currentNode.recursionDepth)
+					break;
+				
+				// Loop over each of the child calls to work out if this redo is actually a redo of one of the child calls
+				for(let j = 0; j < currentNode.childCalls.length; j++)
+				{
+					if(currentNode.childCalls[j].call == trace[i].call)
+					{
+						// We have found the exact call signature of the next trace item!
+						// Go down a level to the redo.
+						prevNode = currentNode;
+						currentNode = prevNode.childCalls[j];
+					}
+				}
+				
 				// Push this redo onto the walkthrough
 				walkthough.push({ type: trace[i].type, id: currentNode.id, redoCallSignature: trace[i].call });
 				break;
@@ -160,7 +182,7 @@ function generateTraceTree(trace)
 	
 	return {
 		// We will have exited all the calls by this point, therefore currentNode will be undefined as it was in the beginning.
-		rootNode: prevNode,
+		rootNode: currentNode,
 		
 		walkthrough: walkthough
 	}
@@ -242,6 +264,84 @@ function generateGraphCode(trace) {
 	// result += `\tgoal["${trace.result.replace(/\[/g, "\[")}"]\n`;
 	// result += `\tstyle goal fill:#ffba00,stroke:#e88600;\n`
 	// result += `\tid${lastPopped.id} --> goal`;
+	
+	return result;
+}
+
+function generateGraphCodeFromTree(rootNode, walkthrough)
+{
+	// todo Use the walkthrough to make an animation.
+	// node We might want ot add an extra paramter here telling us which node we are currently on in the animation
+	
+	// todo Wipe the initialisedOnGraph parameter on start - it might be already set as this function can be called multiple times
+	// note Maybe use symbols here? Although this may cause an increase in memory usage when run many times
+	var result = "graph LR\n\tidstart\n",
+		// Create a startingt pseudo-node
+		startNode = { id: "start", call: "Start" },
+		prevNode,
+		currentNode = rootNode;
+	
+	// Set the parent of the root node to be the starting node
+	rootNode.parentNode = startNode;
+	
+	for(var i = 0; i < walkthrough.length; i++)
+	{
+		switch(walkthrough[i].type)
+		{
+			case "call":
+				// Check to make sure we are looking at the node we want to call (node that at the beginning we will be but later on we won't)
+				// The index of the current node in its parent's childCalls[] array
+				let childCallIndex = 0;
+				if(currentNode.id !== walkthrough[i].id)
+				{
+					// We aren't currently looking at the node we want to do a call on - find it
+					var i = 0;
+					for(let child of currentNode.childCalls)
+					{
+						if(child.id == walkthrough[i].id)
+						{
+							currentNode = child;
+							chlidCallIndex = i;
+							break;
+						}
+						
+						i++;
+					}
+				}
+				
+				if(!currentNode.initialisedOnGraph)
+				{
+					// This node hasn't been initialised on the graph yet. We should do that now.
+					result += `\tid${currentNode.id}["${currentNode.call}"]\n`;
+					currentNode.initialisedOnGraph = true;
+				}
+				
+				result += `\tid${currentNode.id} -->|${childCallIndex}| id${parentNode.id}\n`;
+			
+			case "fail":
+			case "exit":
+				// Back up
+				currentNode = currentNode.parentNode;
+				break;
+			
+			case "redo":
+				if(currentNode.id !== walkthrough[i].id)
+				{
+					// This redo is a redo of one of the child nodes, not of the currentNode
+					// Our mission here is to find that node
+					
+					for(let child of currentNode.childCalls)
+					{
+						if(child.id == walkthrough[i].id)
+						{
+							currentNode = child;
+							break;
+						}
+					}
+				}
+				break;
+		}
+	}
 	
 	return result;
 }
