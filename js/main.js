@@ -14,7 +14,6 @@ window.addEventListener("load", function (event) {
 	document.getElementById("prolog-trace").addEventListener("input", function (event) {
 		// Parse the trace and generate the graph code
 		var trace = parseTrace(this.value),
-//			graphCode = generateGraphCode(trace);
 			graphTree = generateTraceTree(trace.trace),
 			graphCode = generateGraphCodeFromTree(graphTree.rootNode, graphTree.walkthrough);
 		
@@ -195,79 +194,6 @@ function generateTraceTree(trace)
 ██   ██ ██ ██   ██ ██    ██ ██   ██ ██   ██ ██  ██  ██ ██  ██  ██ ██ ██  ██ ██ ██    ██ 
 ██████  ██ ██   ██  ██████  ██   ██ ██   ██ ██      ██ ██      ██ ██ ██   ████  ██████  
 */
-function generateGraphCode(trace) {
-	var result = "graph LR\n\tstart\n",
-	// Todo convert this from  astcak into a tree of sorts
-		stack = [],
-		lastPopped,
-		startingDepth = trace.trace[0].recursionDepth,
-		i = 0;
-	for(let part of trace.trace)
-	{
-		// Set this trace line's ID
-		part.id = i;
-		// Calculate the id of the last node in the sequence
-		let lastID = "start";
-		if(stack.length > 0) lastID = "id" + stack[stack.length - 1].id;
-		
-		//console.log("stack:");
-		//console.table(stack);
-		//console.log(`cline: ${part.type} ${part.call} (depth ${part.recursionDepth})`);
-		
-		switch(part.type)
-		{
-			case "call":
-				// Calculate the number of times we have remade our dicision from this node
-				let label = "";
-				if(stack.length > 0)
-				{
-					let lastNode = stack[stack.length - 1];
-					if(typeof lastNode.redone != "number")
-						lastNode.redone = 0;
-					else
-						lastNode.redone++;
-					label = `|${lastNode.redone}|`;
-				}
-				// Add this node to the diagram
-				result += `\tid${i}["${part.call.replace(/\[/g, "")}"]\n`;
-				result += `\t${lastID}-->${label}id${i}\n`;
-				
-				// Push the node onto the stack
-				stack.push(part);
-				break;
-			case "fail":
-				if(stack[stack.length - 1].call !== part.call)
-					break;
-				// Remove the last element from the stack
-				lastPopped = stack[stack.length - 1];
-				stack.pop();
-				break;
-			case "redo":
-				// This will be used later when we add an animation to the mix
-				break;
-			case "exit":
-				if(stack[stack.length - 1].call !== part.call)
-					break;
-				// This will be used later in the animation, but also to update
-				// the visual description of each call as we get to know
-				// additional information upon exiting a call.
-				stack.pop();
-				lastPopped = stack[stack.length - 1];
-				break;
-		}
-		
-		// stack.length = part.recursionDepth - startingDepth;
-		
-		i++;
-	}
-	
-	// result += `\tgoal["${trace.result.replace(/\[/g, "\[")}"]\n`;
-	// result += `\tstyle goal fill:#ffba00,stroke:#e88600;\n`
-	// result += `\tid${lastPopped.id} --> goal`;
-	
-	return result;
-}
-
 function generateGraphCodeFromTree(rootNode, walkthrough)
 {
 	// todo Use the walkthrough to make an animation.
