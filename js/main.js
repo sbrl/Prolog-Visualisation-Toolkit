@@ -276,9 +276,9 @@ function generateGraphCodeFromTree(rootNode, walkthrough)
 	// todo Wipe the initialisedOnGraph parameter on start - it might be already set as this function can be called multiple times
 	// note Maybe use symbols here? Although this may cause an increase in memory usage when run many times
 	var result = "graph LR\n\tidstart\n",
+		initialisedIds = [],
 		// Create a startingt pseudo-node
-		startNode = { id: "start", call: "Start" },
-		prevNode,
+		startNode = { id: "start", call: "Start", childCalls: [rootNode] },
 		currentNode = rootNode;
 	
 	// Set the parent of the root node to be the starting node
@@ -295,28 +295,29 @@ function generateGraphCodeFromTree(rootNode, walkthrough)
 				if(currentNode.id !== walkthrough[i].id)
 				{
 					// We aren't currently looking at the node we want to do a call on - find it
-					var i = 0;
+					let j = 0;
 					for(let child of currentNode.childCalls)
 					{
 						if(child.id == walkthrough[i].id)
 						{
 							currentNode = child;
-							chlidCallIndex = i;
+							childCallIndex = j;
 							break;
 						}
 						
-						i++;
+						j++;
 					}
 				}
 				
-				if(!currentNode.initialisedOnGraph)
+				if(initialisedIds.indexOf(walkthrough[i].id) == -1)
 				{
 					// This node hasn't been initialised on the graph yet. We should do that now.
 					result += `\tid${currentNode.id}["${currentNode.call}"]\n`;
-					currentNode.initialisedOnGraph = true;
+					initialisedIds.push(walkthrough[i].id);
 				}
 				
-				result += `\tid${currentNode.id} -->|${childCallIndex}| id${parentNode.id}\n`;
+				result += `\tid${currentNode.parentNode.id} -->|${childCallIndex}| id${currentNode.id}\n`;
+				break;
 			
 			case "fail":
 			case "exit":
