@@ -1,0 +1,15 @@
+   Call: (7) sbrlmember(apple, [grape, pear, apple]) ? creep
+   Call: (8) apple=grape ? creep
+   Fail: (8) apple=grape ? creep
+   Redo: (7) sbrlmember(apple, [grape, pear, apple]) ? creep
+   Call: (8) sbrlmember(apple, [pear, apple]) ? creep
+   Call: (9) apple=pear ? creep
+   Fail: (9) apple=pear ? creep
+   Redo: (8) sbrlmember(apple, [pear, apple]) ? creep
+   Call: (9) sbrlmember(apple, [apple]) ? creep
+   Call: (10) apple=apple ? creep
+   Exit: (10) apple=apple ? creep
+   Exit: (9) sbrlmember(apple, [apple]) ? creep
+   Exit: (8) sbrlmember(apple, [pear, apple]) ? creep
+   Exit: (7) sbrlmember(apple, [grape, pear, apple]) ? creep
+true .
